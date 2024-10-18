@@ -1,3 +1,4 @@
+import sys
 import socket 
 
 class URL: 
@@ -42,5 +43,24 @@ class URL:
                 return content 
             except ValueError: 
                 print("ValueError: Some line in the response not the right length")
+        
+    def show(self, body):
+        in_tag = False 
+        for c in body: 
+            if c == "<":
+                in_tag = True
+            elif c == ">":
+                in_tag = False 
+            elif not in_tag: 
+                print(c, end="")
+    
+    def load(self): 
+       body = self.request()
+       self.show(body)
+
+if __name__ == "__main__": 
+    url = URL(sys.argv[1])
+    url.load()
+
 
 
