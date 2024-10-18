@@ -19,12 +19,28 @@ class URL:
         request = f"GET {self.path} HTTP/1.0\r\n"
         request += f"Host: {self.host} \r\n"
         request += "\r\n"
-        print(request)
+        # print(request)
         s.send(request.encode("utf8"))
 
         response = s.makefile("r", encoding="utf8", newline="\r\n")
         statusline = response.readline()
         version, status, explanation = statusline.split(" ", 2)
 
-ex = URL("http://www.google.com")
-ex.request()
+        response_headers = {}
+        while True: 
+            line = response.readline()
+            if line == "\r\n": break 
+            print(line)
+            print("test", line.split(":" , 1))
+            try: 
+                header, value = line.split(":", 1)
+                response_headers[header.casefold()] = value.strip()
+                assert "transfer-encoding" not in response_headers 
+                assert "content-encoding" not in response_headers
+                content = response.read()
+                s.close()
+                return content 
+            except ValueError: 
+                print("ValueError: Some line in the response not the right length")
+
+
