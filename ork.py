@@ -1,4 +1,5 @@
 import sys
+import ssl
 import socket 
 
 class URL: 
