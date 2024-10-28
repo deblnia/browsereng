@@ -69,8 +69,11 @@ class Browser:
         self.canvas.pack()
 
     def load(self, url):
-        body = self.request()
-        self.show(body)
+        body = url.request()
+        displayed_text = url.show(body)
+        self.display_content(displayed_text)
+    
+    def display_content(self, text): 
         self.canvas.create_rectangle(10, 20, 400, 300)
         self.canvas.create_oval(100, 100, 150, 150) 
         self.canvas.create_text(200, 150, text="Hi!")
