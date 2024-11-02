@@ -70,20 +70,19 @@ class Browser:
 
     def load(self, url):
         body = url.request()
-        displayed_text = url.show(body)
-        self.display_content(displayed_text)
-    
-    def display_content(self, text): 
+        # url.show(body)
+        # Drawing shapes and text
         self.canvas.create_rectangle(10, 20, 400, 300)
-        self.canvas.create_oval(100, 100, 150, 150) 
+        self.canvas.create_oval(100, 100, 150, 150)
         self.canvas.create_text(200, 150, text="Hi!")
 
- 
+    def run(self):
+        self.window.mainloop()
 
 if __name__ == "__main__": 
-    Browser().load(URL(sys.argv[1]))
-    tkinter.mainloop()
-    # url.load()
+    browser = Browser()
+    browser.load(URL(sys.argv[1]))
+    browser.run()
 
 
 
