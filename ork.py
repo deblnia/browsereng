@@ -49,6 +49,7 @@ class URL:
                 print("ValueError: Some line in the response not the right length")
         
     def show(self, body):
+        text = ""
         in_tag = False 
         for c in body: 
             if c == "<":
@@ -56,7 +57,8 @@ class URL:
             elif c == ">":
                 in_tag = False 
             elif not in_tag: 
-                print(c, end="") 
+                text += c 
+        return text 
 
 class Browser: 
     def __init__(self): 
@@ -69,20 +71,20 @@ class Browser:
         self.canvas.pack()
 
     def load(self, url):
+        HSTEP, VSTEP = 13, 18
+        cursor_x, cursor_y = HSTEP, VSTEP
         body = url.request()
-        # url.show(body)
-        # Drawing shapes and text
-        self.canvas.create_rectangle(10, 20, 400, 300)
-        self.canvas.create_oval(100, 100, 150, 150)
-        self.canvas.create_text(200, 150, text="Hi!")
-
-    def run(self):
-        self.window.mainloop()
+        text = url.show(body)
+        for c in text: 
+            self.canvas.create_text(cursor_x, cursor_y, text=c)
+            cursor_x += HSTEP
+            if cursor_x >= WIDTH - HSTEP:
+                cursor_y += VSTEP
+                cursor_x += HSTEP
 
 if __name__ == "__main__": 
-    browser = Browser()
-    browser.load(URL(sys.argv[1]))
-    browser.run()
+    Browser().load(URL(sys.argv[1]))
+    tkinter.mainloop()
 
 
 
